@@ -1,32 +1,57 @@
 package app.model.entity;
 
 public class Tact {
-    private final int DEFAULT_BEATS_NUMBER = 4;
-    private final BeatsType DEFAULT_BEATS_TYPE = BeatsType.QUARTER;
-    private final int DEFAULT_BPM = 120;
-    private int beatsNumber;
+
+    private BeatsType beatsType;
+    private double bpm;
+    private int beatsQuantity;
     private Beat beat;
+    private Click click;
 
-    public Tact() {
-        this.beatsNumber = DEFAULT_BEATS_NUMBER;
-        this.beat = new Beat(DEFAULT_BEATS_TYPE,DEFAULT_BPM);
+    public Tact(double bpm, int beatsQuantity) {
+        this.bpm = bpm;
+        this.beatsQuantity = beatsQuantity;
     }
 
-    public Tact(BeatsType beatsType, int bpm) {
-        this.beatsNumber = DEFAULT_BEATS_NUMBER;
-        this.beat = new Beat(beatsType, bpm);
+    public int getBeatsQuantity() {
+        return beatsQuantity;
     }
 
-    public Tact(BeatsType beatsType, int beatsNumber, int bpm) {
-        this.beatsNumber = beatsNumber;
-        this.beat = new Beat(beatsType, bpm);
+    public void setBeatsQuantity(int beatsQuantity) {
+        if (beatsQuantity <= 0){
+            this.beatsQuantity = DefaultVariables.DEFAULT_BEATS_QUANTITY;
+        }
+        this.beatsQuantity = beatsQuantity;
     }
 
-    public int getBeatsNumber() {
-        return beatsNumber;
+    public Click getClick() {
+        return click;
     }
 
-    public Beat getBeat() {
+    public void createClick() {
+        this.click = new Click();
+    }
+
+    public double getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(double bpm) {
+        if (bpm <= 0){
+            this.bpm = DefaultVariables.DEFAULT_BPM;
+        } else {
+            this.bpm = bpm;
+        }
+    }
+
+    public Beat createBeat(BeatsType beatsType){
+        if(beat == null){
+            beat = new Beat(beatsType,bpm);
+        }
         return beat;
+    }
+    public void play(){
+        click.play();
+        click.stop();
     }
 }

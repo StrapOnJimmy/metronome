@@ -1,5 +1,5 @@
 package app.model.entity;
 
-public enum Instruments {
+public enum InstrumentsType {
     LowWoodBlock,LowBongo,Cowbell;
 }
