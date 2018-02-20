@@ -4,20 +4,17 @@ public class Click {
     private Sound sound;
     private InstrumentsType instrument;
 
-    public void setInstrument(InstrumentsType instrument) {
-        this.instrument = instrument;
-    }
+
 
     public Click() {
-        setSound();
     }
 
     public Sound getSound() {
         return sound;
     }
 
-    public void setSound() {
-        this.sound = new Sound(115);
+    public void createSound(InstrumentsType instrument) {
+        this.sound = new Sound(instrument);
     }
 
     public void play(){
@@ -26,5 +23,9 @@ public class Click {
 
     public void stop(){
         sound.stopSound();
+    }
+
+    public void setInstrument(InstrumentsType instrument) {
+        this.instrument = instrument;
     }
 }

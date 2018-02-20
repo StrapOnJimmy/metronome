@@ -9,8 +9,8 @@ public class Sound{
     private int volumeLevel = 100;
     private MidiChannel[] channels;
 
-    public Sound(int instrument) {
-        this.instrument = instrument;
+    public Sound(InstrumentsType instrument) {
+        getInstrument(instrument);
         try {
             Synthesizer synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
@@ -25,7 +25,7 @@ public class Sound{
         channels[9].noteOn(instrument,volumeLevel);
     }
     public void stopSound(){
-//        channels[10].noteOff(60);
+       channels[9].noteOff(instrument);
     }
 
     public void setVolumeLevel(int volumeLevel) {
@@ -34,5 +34,22 @@ public class Sound{
 
     public void setInstrument(int instrument) {
         this.instrument = instrument;
+    }
+
+    private void getInstrument(InstrumentsType instrument){
+        switch (instrument){
+            case Cowbell:
+                this.instrument = 56;
+                break;
+            case LowBongo:
+                this.instrument = 61;
+                break;
+            case LowWoodBlock:
+                this.instrument = 77;
+                break;
+            case SideStick:
+                this.instrument = 37;
+                break;
+        }
     }
 }

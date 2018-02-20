@@ -5,9 +5,10 @@ import java.util.Timer;
 public class main {
     public static void main(String[] args) throws InterruptedException {
 
-        Tact tact = new Tact(90);
+        Tact tact = new Tact(100);
         Beat beat = tact.createBeat(BeatsType.QUARTER);
-        tact.createClick();
+        Click click = tact.createClick();
+        click.createSound(InstrumentsType.SideStick);
         boolean onStart = true;
 
         while (onStart) {

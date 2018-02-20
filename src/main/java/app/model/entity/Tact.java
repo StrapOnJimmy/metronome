@@ -24,12 +24,10 @@ public class Tact {
         this.beatsQuantity = beatsQuantity;
     }
 
-    public Click getClick() {
-        return click;
-    }
 
-    public void createClick() {
+    public Click createClick() {
         this.click = new Click();
+        return click;
     }
 
     public double getBpm() {
