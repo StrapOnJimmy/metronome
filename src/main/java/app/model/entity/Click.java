@@ -2,6 +2,11 @@ package app.model.entity;
 
 public class Click {
     private Sound sound;
+    private InstrumentsType instrument;
+
+    public void setInstrument(InstrumentsType instrument) {
+        this.instrument = instrument;
+    }
 
     public Click() {
         setSound();
@@ -12,7 +17,7 @@ public class Click {
     }
 
     public void setSound() {
-        this.sound = new Sound();
+        this.sound = new Sound(115);
     }
 
     public void play(){

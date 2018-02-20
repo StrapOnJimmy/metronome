@@ -8,9 +8,9 @@ public class Tact {
     private Beat beat;
     private Click click;
 
-    public Tact(double bpm, int beatsQuantity) {
+    public Tact(double bpm) {
         this.bpm = bpm;
-        this.beatsQuantity = beatsQuantity;
+        this.beatsQuantity = DefaultValues.DEFAULT_BEATS_QUANTITY;
     }
 
     public int getBeatsQuantity() {
@@ -19,7 +19,7 @@ public class Tact {
 
     public void setBeatsQuantity(int beatsQuantity) {
         if (beatsQuantity <= 0){
-            this.beatsQuantity = DefaultVariables.DEFAULT_BEATS_QUANTITY;
+            return;
         }
         this.beatsQuantity = beatsQuantity;
     }
@@ -38,7 +38,7 @@ public class Tact {
 
     public void setBpm(double bpm) {
         if (bpm <= 0){
-            this.bpm = DefaultVariables.DEFAULT_BPM;
+            this.bpm = DefaultValues.DEFAULT_BPM;
         } else {
             this.bpm = bpm;
         }

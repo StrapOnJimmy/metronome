@@ -5,26 +5,34 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Synthesizer;
 
 public class Sound{
-    private InstrumentsType instrument;
-    private double durabilityBetweenClick;
-    private int volumeLevel;
+    private int instrument;
+    private int volumeLevel = 100;
     private MidiChannel[] channels;
 
-    public Sound() {
+    public Sound(int instrument) {
+        this.instrument = instrument;
         try {
             Synthesizer synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
             channels= synthesizer.getChannels();
-            channels[10].programChange(115);
+            channels[9].programChange(0);
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
     public void playSound(){
-        channels[10].noteOn( 65,100);
+        channels[9].noteOn(instrument,volumeLevel);
     }
     public void stopSound(){
-        channels[10].noteOff(65);
+//        channels[10].noteOff(60);
+    }
+
+    public void setVolumeLevel(int volumeLevel) {
+        this.volumeLevel = volumeLevel;
+    }
+
+    public void setInstrument(int instrument) {
+        this.instrument = instrument;
     }
 }
