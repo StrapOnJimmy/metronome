@@ -2,11 +2,11 @@ package app.model.entity;
 
 public class Beat {
     private double bpm;
-    private BeatsType beatsType;
+    private BeatsTypes beatsTypes;
     private double durability;
 
-    public Beat(BeatsType beatsType, double bpm) {
-        this.beatsType = beatsType;
+    public Beat(BeatsTypes beatsTypes, double bpm) {
+        this.beatsTypes = beatsTypes;
         this.bpm = bpm;
         setDurability();
     }
@@ -16,7 +16,7 @@ public class Beat {
     }
 
     private void setDurability() {
-        switch (beatsType){
+        switch (beatsTypes){
             case WHOLE:
                 durability = (DefaultValues.ONE_MINUTE /(bpm/4))*1000;
                 break;
@@ -41,7 +41,7 @@ public class Beat {
         }
     }
 
-    public BeatsType getBeatsType() {
-        return beatsType;
+    public BeatsTypes getBeatsTypes() {
+        return beatsTypes;
     }
 }

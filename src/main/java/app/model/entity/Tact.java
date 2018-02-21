@@ -2,15 +2,19 @@ package app.model.entity;
 
 public class Tact {
 
-    private BeatsType beatsType;
+    private BeatsTypes beatsTypes;
     private double bpm;
     private int beatsQuantity;
     private Beat beat;
-    private Click click;
 
     public Tact(double bpm) {
         this.bpm = bpm;
         this.beatsQuantity = DefaultValues.DEFAULT_BEATS_QUANTITY;
+    }
+
+    public Tact(double bpm, int beatsQuantity) {
+        this.bpm = bpm;
+        this.beatsQuantity = beatsQuantity;
     }
 
     public int getBeatsQuantity() {
@@ -26,7 +30,7 @@ public class Tact {
 
 
     public Click createClick() {
-        this.click = new Click();
+        Click click = new Click(beatsQuantity);
         return click;
     }
 
@@ -42,14 +46,10 @@ public class Tact {
         }
     }
 
-    public Beat createBeat(BeatsType beatsType){
+    public Beat createBeat(BeatsTypes beatsTypes){
         if(beat == null){
-            beat = new Beat(beatsType,bpm);
+            beat = new Beat(beatsTypes,bpm);
         }
         return beat;
-    }
-    public void play(){
-        click.play();
-        click.stop();
     }
 }

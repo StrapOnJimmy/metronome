@@ -1,5 +1,5 @@
 package app.model.entity;
 
-public enum BeatsType {
+public enum BeatsTypes {
     WHOLE, HALF, QUARTER,EIGHTH,SIXTEENTH,THIRTYTWO,SIXTYFOURTH;
 }

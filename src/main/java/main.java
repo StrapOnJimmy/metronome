@@ -1,21 +1,28 @@
 import app.model.entity.*;
 
-import java.util.Timer;
+import java.util.Scanner;
 
 public class main {
     public static void main(String[] args) throws InterruptedException {
+        String inputData;
+        boolean onStart = false;
 
-        Tact tact = new Tact(100);
-        Beat beat = tact.createBeat(BeatsType.QUARTER);
+        Tact tact = new Tact(130,8);
+        Beat beat = tact.createBeat(BeatsTypes.EIGHTH);
         Click click = tact.createClick();
-        click.createSound(InstrumentsType.SideStick);
-        boolean onStart = true;
+        click.createSound(InstrumentsTypes.SideStick);
+
+        Scanner scanner = new Scanner(System.in);
+        inputData = scanner.nextLine();
+
+        if (inputData.equals("1")){
+            onStart = true;
+        }else {
+            click.getSound().close();
+        }
 
         while (onStart) {
-            for (int i = 1; i <= 120 ; i++) {
-                tact.play();
-                Thread.sleep(beat.getDurability());
-            }
+                click.play(beat.getDurability(),true);
         }
     }
 }

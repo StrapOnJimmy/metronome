@@ -1,7 +1,5 @@
 package app.GUI;
 
-import app.model.entity.InstrumentsType;
-
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -19,13 +17,6 @@ public class MetronomeUI extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(StartButton);
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
