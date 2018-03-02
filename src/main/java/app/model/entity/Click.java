@@ -3,18 +3,19 @@ package app.model.entity;
 public class Click {
     private Sound sound;
     private InstrumentsTypes instrument;
-    int beatsQuantity;
+    private int beatsQuantity;
 
 
-    public Click(int beatsQuantity) {
+    public Click(int beatsQuantity, InstrumentsTypes instrument) {
         this.beatsQuantity = beatsQuantity;
+        this.instrument = instrument;
     }
 
     public Sound getSound() {
         return sound;
     }
 
-    public void createSound(InstrumentsTypes instrument) {
+    public void createSound() {
         this.sound = new Sound(instrument);
     }
 

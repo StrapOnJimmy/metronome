@@ -28,7 +28,7 @@ public class Sound {
     public void playSound(long duration, boolean accentOn, int beatsQuantity) {
         if (accentOn){
             int iterator= 1;
-            channels[9].noteOn(DefaultValues.ACCENT, 200);
+            channels[9].noteOn(DefaultValues.ACCENT, volumeLevel);
             try {
                 Thread.sleep(duration);
             } catch (InterruptedException e) {

@@ -7,10 +7,10 @@ public class main {
         String inputData;
         boolean onStart = false;
 
-        Tact tact = new Tact(130,8);
-        Beat beat = tact.createBeat(BeatsTypes.EIGHTH);
+        Tact tact = new Tact();
+        Beat beat = tact.createBeat();
         Click click = tact.createClick();
-        click.createSound(InstrumentsTypes.SideStick);
+        click.createSound();
 
         Scanner scanner = new Scanner(System.in);
         inputData = scanner.nextLine();

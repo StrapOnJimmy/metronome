@@ -5,6 +5,11 @@ public class Beat {
     private BeatsTypes beatsTypes;
     private double durability;
 
+    public Beat(){
+        this.beatsTypes = DefaultValues.DEFAULT_BEATS_TYPE;
+        this.bpm = DefaultValues.DEFAULT_BPM;
+    }
+
     public Beat(BeatsTypes beatsTypes, double bpm) {
         this.beatsTypes = beatsTypes;
         this.bpm = bpm;

@@ -6,16 +6,25 @@ public class Tact {
     private double bpm;
     private int beatsQuantity;
     private Beat beat;
+    private InstrumentsTypes instrument;
+    private Click click;
 
-    public Tact(double bpm) {
-        this.bpm = bpm;
+    public Tact() {
+        this.bpm = DefaultValues.DEFAULT_BPM;
         this.beatsQuantity = DefaultValues.DEFAULT_BEATS_QUANTITY;
+        this.beatsTypes = DefaultValues.DEFAULT_BEATS_TYPE;
+        this.instrument = DefaultValues.DEFAULT_INSTRUMENT;
     }
 
-    public Tact(double bpm, int beatsQuantity) {
-        this.bpm = bpm;
-        this.beatsQuantity = beatsQuantity;
-    }
+//    public Tact(double bpm) {
+//        this.bpm = bpm;
+//        this.beatsQuantity = DefaultValues.DEFAULT_BEATS_QUANTITY;
+//    }
+
+//    public Tact(double bpm, int beatsQuantity) {
+//        this.bpm = bpm;
+//        this.beatsQuantity = beatsQuantity;
+//    }
 
     public int getBeatsQuantity() {
         return beatsQuantity;
@@ -26,12 +35,6 @@ public class Tact {
             return;
         }
         this.beatsQuantity = beatsQuantity;
-    }
-
-
-    public Click createClick() {
-        Click click = new Click(beatsQuantity);
-        return click;
     }
 
     public double getBpm() {
@@ -46,10 +49,15 @@ public class Tact {
         }
     }
 
-    public Beat createBeat(BeatsTypes beatsTypes){
+    public Beat createBeat(){
         if(beat == null){
             beat = new Beat(beatsTypes,bpm);
         }
         return beat;
+    }
+
+    public Click createClick() {
+        click = new Click(beatsQuantity,instrument);
+        return click;
     }
 }
