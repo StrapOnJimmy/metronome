@@ -15,11 +15,10 @@ public class WorkerThread extends Thread {
         do {
             click.play(beat.getDurability(), true);
         } while (onStart);
-
-
     }
 
     public void stopPlay() {
         onStart = false;
+        click.stop();
     }
 }

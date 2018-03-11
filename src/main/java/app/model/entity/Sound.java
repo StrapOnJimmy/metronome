@@ -4,6 +4,7 @@ import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,8 +13,10 @@ public class Sound {
     private int volumeLevel = 200;
     private MidiChannel[] channels;
     private Synthesizer synthesizer;
+    private AtomicBoolean isStopped;
 
     public Sound(InstrumentsTypes instrument) {
+        isStopped = new AtomicBoolean();
         getMidiNumberOfInstrument(instrument);
         try {
             synthesizer = MidiSystem.getSynthesizer();
@@ -26,6 +29,9 @@ public class Sound {
     }
 
     public void playSound(long duration, boolean accentOn, int beatsQuantity) {
+        if (isStopped.get()) {
+            isStopped.set(false);
+        }
         if (accentOn){
             int iterator= 1;
             channels[9].noteOn(DefaultValues.ACCENT, volumeLevel);
@@ -35,6 +41,9 @@ public class Sound {
                 e.printStackTrace();
             }
             while (iterator < beatsQuantity) {
+                if (isStopped.get()) {
+                    break;
+                }
                 channels[9].noteOn(instrument, volumeLevel);
                 iterator++;
                 try {
@@ -54,6 +63,7 @@ public class Sound {
     }
 
     public void stopSound() {
+        isStopped.set(true);
         channels[9].noteOff(instrument);
     }
 
