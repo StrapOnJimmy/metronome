@@ -8,15 +8,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Sound {
+public class Sound implements Runnable{
     private int instrument;
     private int volumeLevel = 200;
     private MidiChannel[] channels;
     private Synthesizer synthesizer;
-    private Boolean isStopped;
+    private volatile Boolean isRunning = true;
+    private int beatsQuantity;
+    private boolean accentOn;
+    private long duration;
 
-    public Sound(InstrumentsTypes instrument) {
-        isStopped = true;
+    public Sound(InstrumentsTypes instrument, int beatsQuantity, boolean accentOn, long duration) {
+        this.accentOn = accentOn;
+        this.beatsQuantity = beatsQuantity;
+        this.duration = duration;
         getMidiNumberOfInstrument(instrument);
         try {
             synthesizer = MidiSystem.getSynthesizer();
@@ -28,42 +33,43 @@ public class Sound {
         }
     }
 
-    public void playSound(long duration, boolean accentOn, int beatsQuantity) {
-        if (isStopped) {
-            isStopped = false;
+    public void run() {
+//        if (isStopped) {
+//            isStopped = false;
+//        }
+        while (isRunning){
+            playSound();
         }
+    }
+
+    public void playSound() {
+
         if (accentOn){
             int iterator= 1;
             channels[9].noteOn(DefaultValues.ACCENT, volumeLevel);
             try {
                 Thread.sleep(duration);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) {}
             while (iterator < beatsQuantity) {
-                if (isStopped) {
+                if (!isRunning) {
                     break;
                 }
                 channels[9].noteOn(instrument, volumeLevel);
                 iterator++;
                 try {
                     Thread.sleep(duration);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                } catch (InterruptedException e) {}
             }
         } else {
             channels[9].noteOn(instrument, volumeLevel);
             try {
                 Thread.sleep(duration);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException e) {}
         }
     }
 
-    public void stopSound() {
-        isStopped = true;
+    public synchronized void stopSound() {
+        isRunning = false;
         channels[9].noteOff(instrument);
     }
 
@@ -90,5 +96,17 @@ public class Sound {
 
     public void close() {
         synthesizer.close();
+    }
+
+    public void setBeatsQuantity(int beatsQuantity) {
+        this.beatsQuantity = beatsQuantity;
+    }
+
+    public void setAccentOn(boolean accentOn) {
+        this.accentOn = accentOn;
+    }
+
+    public void setDuratiion(long duration) {
+        this.duration = duration;
     }
 }

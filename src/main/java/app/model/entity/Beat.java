@@ -49,4 +49,14 @@ public class Beat {
     public BeatsTypes getBeatsTypes() {
         return beatsTypes;
     }
+
+    public void setBeatsTypes(BeatsTypes beatsTypes) {
+        this.beatsTypes = beatsTypes;
+        setDurability();
+    }
+
+    public void setBpm(double bpm) {
+        this.bpm = bpm;
+        setDurability();
+    }
 }

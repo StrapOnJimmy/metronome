@@ -7,7 +7,6 @@ public class main {
 
         Tact tact = new Tact();
         Beat beat = tact.createBeat();
-        tact.createClick();
         boolean onStart = true;
 
         while (onStart) {

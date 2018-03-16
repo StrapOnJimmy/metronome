@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class MetronomeUI extends JDialog {
-    private WorkerThread workerThread;
     private JPanel contentPane;
     private JButton buttonCancel;
     private JComboBox quantityButton;
@@ -18,9 +17,8 @@ public class MetronomeUI extends JDialog {
     private JCheckBox accentCheckBox;
     private DefaultComboBoxModel comboBoxModel;
     private Tact tact;
-    private Click click;
     private Beat beat;
-
+    private Sound sound;
 
 
 
@@ -35,14 +33,18 @@ public class MetronomeUI extends JDialog {
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                workerThread = new WorkerThread(click, beat);
-                workerThread.start();
+                if (sound != null){
+                    sound.stopSound();
+                }
+                sound = tact.createSound();
+                Thread clickThread = new Thread(sound);
+                clickThread.start();
             }
         });
 
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                workerThread.stopPlay();
+                sound.stopSound();
             }
         });
 
@@ -61,6 +63,24 @@ public class MetronomeUI extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        quantityButton.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    Object item = e.getItem();
+                    tact.setBeatsQuantity(Integer.parseInt(item.toString()));
+                }
+            }
+        });
+
+        beatsButton.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    Object item = e.getItem();
+                    tact.setBeatsTypes(BeatsTypes.valueOf(item.toString()));
+                }
+            }
+        });
     }
 
     private void onCancel() {
@@ -90,11 +110,8 @@ public class MetronomeUI extends JDialog {
     }
 
     private void initializeMetronome(){
-
         tact = new Tact();
         beat = tact.createBeat();
-        click = tact.createClick();
-        click.createSound();
     }
 
     public static void main(String[] args) {
