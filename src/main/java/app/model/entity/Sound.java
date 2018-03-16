@@ -13,10 +13,10 @@ public class Sound {
     private int volumeLevel = 200;
     private MidiChannel[] channels;
     private Synthesizer synthesizer;
-    private AtomicBoolean isStopped;
+    private Boolean isStopped;
 
     public Sound(InstrumentsTypes instrument) {
-        isStopped = new AtomicBoolean();
+        isStopped = true;
         getMidiNumberOfInstrument(instrument);
         try {
             synthesizer = MidiSystem.getSynthesizer();
@@ -29,8 +29,8 @@ public class Sound {
     }
 
     public void playSound(long duration, boolean accentOn, int beatsQuantity) {
-        if (isStopped.get()) {
-            isStopped.set(false);
+        if (isStopped) {
+            isStopped = false;
         }
         if (accentOn){
             int iterator= 1;
@@ -41,7 +41,7 @@ public class Sound {
                 e.printStackTrace();
             }
             while (iterator < beatsQuantity) {
-                if (isStopped.get()) {
+                if (isStopped) {
                     break;
                 }
                 channels[9].noteOn(instrument, volumeLevel);
@@ -63,7 +63,7 @@ public class Sound {
     }
 
     public void stopSound() {
-        isStopped.set(true);
+        isStopped = true;
         channels[9].noteOff(instrument);
     }
 
