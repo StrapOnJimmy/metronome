@@ -57,11 +57,12 @@ public class MetronomeUI extends JFrame {
         tempoField.addChangeListener(e -> {
             Object value = tempoField.getValue();
             Double bpm = Double.valueOf(value.toString());
-            if (bpm > 400){
-                showMessage("Максимальное значение 400");
-                tempoField.setValue(400);
+            if (bpm > 240){
+                showMessage("Максимальное значение 240");
+                tempoField.setValue(240);
+                bpm = 240.0;
             }
-            tact.setBpm(Double.valueOf(value.toString()));
+            tact.setBpm(bpm);
         });
 
         accentCheckBox.addActionListener(e -> {
