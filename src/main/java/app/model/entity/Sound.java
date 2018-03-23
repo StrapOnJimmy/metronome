@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 
 public class Sound implements Runnable{
     private int instrument;
-    private int volumeLevel = 200;
+    private InstrumentsTypes instrumentsType;
+    private int volumeLevel = 100;
     private MidiChannel[] channels;
     private Synthesizer synthesizer;
     private volatile Boolean isRunning = true;
@@ -106,7 +107,12 @@ public class Sound implements Runnable{
         this.accentOn = accentOn;
     }
 
-    public void setDuratiion(long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public void setInstrumentsType(InstrumentsTypes instrumentsType) {
+        this.instrumentsType = instrumentsType;
+        getMidiNumberOfInstrument(instrumentsType);
     }
 }

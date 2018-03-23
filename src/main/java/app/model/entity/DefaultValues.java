@@ -9,6 +9,7 @@ public final class DefaultValues {
     public static final int[] beatsQuantities = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
     public static final  InstrumentsTypes DEFAULT_INSTRUMENT = InstrumentsTypes.SideStick;
     public static final boolean DEFAULT_ACCENT_ON = true;
+    public static final  int DEFAULT_VOLUME_VALUE = 100;
 
     private DefaultValues(){}
 }

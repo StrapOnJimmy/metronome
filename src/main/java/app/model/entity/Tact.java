@@ -9,6 +9,7 @@ public class Tact {
     private InstrumentsTypes instrument;
     private Sound sound;
     private boolean accentOn;
+    private int volume;
 
     public Tact() {
         this.bpm = DefaultValues.DEFAULT_BPM;
@@ -16,6 +17,7 @@ public class Tact {
         this.beatsTypes = DefaultValues.DEFAULT_BEATS_TYPE;
         this.instrument = DefaultValues.DEFAULT_INSTRUMENT;
         this.accentOn = DefaultValues.DEFAULT_ACCENT_ON;
+        this.volume = DefaultValues.DEFAULT_VOLUME_VALUE;
     }
 
 //    public Tact(double bpm) {
@@ -48,9 +50,11 @@ public class Tact {
         if (bpm <= 0){
             this.bpm = DefaultValues.DEFAULT_BPM;
             beat.setBpm(this.bpm);
+            sound.setDuration(beat.getDurability());
         } else {
             this.bpm = bpm;
             beat.setBpm(this.bpm);
+            sound.setDuration(beat.getDurability());
         }
     }
 
@@ -75,5 +79,16 @@ public class Tact {
     public void setBeatsTypes(BeatsTypes beatsTypes) {
         this.beatsTypes = beatsTypes;
         beat.setBeatsTypes(this.beatsTypes);
+        sound.setDuration(beat.getDurability());
+    }
+
+    public void setInstrument(InstrumentsTypes instrument) {
+        this.instrument = instrument;
+        sound.setInstrumentsType(instrument);
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+        sound.setVolumeLevel(volume);
     }
 }

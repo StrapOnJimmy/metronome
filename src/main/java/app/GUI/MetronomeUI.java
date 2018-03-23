@@ -1,91 +1,87 @@
 package app.GUI;
 
-import app.controller.MetronomeController;
 import app.model.entity.*;
-
 import javax.swing.*;
 import java.awt.event.*;
 
-public class MetronomeUI extends JDialog {
+
+public class MetronomeUI extends JFrame {
     private JPanel contentPane;
-    private JButton buttonCancel;
     private JComboBox quantityButton;
     private JComboBox beatsButton;
-    private JTextField tempoField;
+    private JSpinner tempoField;
     private JButton startButton;
     private JButton stopButton;
     private JCheckBox accentCheckBox;
-    private DefaultComboBoxModel comboBoxModel;
+    private JComboBox clickSound;
+    private JSlider volumeSlider;
+    private JOptionPane optionPane;
     private Tact tact;
     private Beat beat;
     private Sound sound;
+    private Thread clickThread;
 
 
 
     public MetronomeUI() {
+        super("Metronome");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(contentPane);
-        setModal(true);
         getRootPane().setDefaultButton(startButton);
-        fillQuantityButton();
-        fillBeatButton();
-        fillTempoField();
-        initializeMetronome();
 
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (sound != null){
-                    sound.stopSound();
-                }
-                sound = tact.createSound();
-                Thread clickThread = new Thread(sound);
-                clickThread.start();
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        startButton.addActionListener(e -> {
+            if (sound != null){
                 sound.stopSound();
             }
+            sound = tact.createSound();
+            clickThread = new Thread(sound);
+            clickThread.start();
         });
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
+        stopButton.addActionListener(e -> sound.stopSound());
+
+        quantityButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                Object item = e.getItem();
+                tact.setBeatsQuantity(Integer.parseInt(item.toString()));
             }
         });
 
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        quantityButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED){
-                    Object item = e.getItem();
-                    tact.setBeatsQuantity(Integer.parseInt(item.toString()));
-                }
+        beatsButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                Object item = e.getItem();
+                tact.setBeatsTypes(BeatsTypes.valueOf(item.toString()));
             }
         });
 
-        beatsButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED){
-                    Object item = e.getItem();
-                    tact.setBeatsTypes(BeatsTypes.valueOf(item.toString()));
-                }
+        tempoField.addChangeListener(e -> {
+            Object value = tempoField.getValue();
+            Double bpm = Double.valueOf(value.toString());
+            if (bpm > 400){
+                showMessage("Максимальное значение 400");
+                tempoField.setValue(400);
+            }
+            tact.setBpm(Double.valueOf(value.toString()));
+        });
+
+        accentCheckBox.addActionListener(e -> {
+            if (accentCheckBox.isSelected()){
+                tact.setAccentOn(true);
+            }else tact.setAccentOn(false);
+
+        });
+
+        clickSound.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Object item = e.getItem();
+                tact.setInstrument(InstrumentsTypes.valueOf(item.toString()));
             }
         });
-    }
 
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
+        volumeSlider.addChangeListener(e -> {
+            int volumeValue = volumeSlider.getValue();
+            tact.setVolume(volumeValue);
+        });
     }
 
     private void fillBeatButton() {
@@ -94,7 +90,7 @@ public class MetronomeUI extends JDialog {
                 ) {
             beatsButton.addItem(beatType);
         }
-        beatsButton.setSelectedIndex(2);
+        beatsButton.setSelectedItem(DefaultValues.DEFAULT_BEATS_TYPE);
     }
 
     private void fillQuantityButton() {
@@ -102,27 +98,45 @@ public class MetronomeUI extends JDialog {
                 ) {
             quantityButton.addItem(beatQuantitiy);
         }
-        quantityButton.setSelectedIndex(3);
+        quantityButton.setSelectedItem(DefaultValues.DEFAULT_BEATS_QUANTITY);
     }
 
     private void fillTempoField() {
-        tempoField.setText(String.valueOf(DefaultValues.DEFAULT_BPM));
+        tempoField.setValue(DefaultValues.DEFAULT_BPM);
+    }
+
+    private void fillInstrumentTypes(){
+        for (InstrumentsTypes instrument: InstrumentsTypes.values()
+             ) {
+            clickSound.addItem(instrument);
+        }
+        clickSound.setSelectedItem(DefaultValues.DEFAULT_INSTRUMENT);
+    }
+
+    private void fillVolumeSlider(){
+        volumeSlider.setMaximum(200);
+        volumeSlider.setValue(DefaultValues.DEFAULT_VOLUME_VALUE);
+    }
+
+    private void showMessage(String text){
+        optionPane.showMessageDialog(null, text);
     }
 
     private void initializeMetronome(){
         tact = new Tact();
         beat = tact.createBeat();
+        sound = tact.createSound();
     }
 
     public static void main(String[] args) {
-        MetronomeUI dialog = new MetronomeUI();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-//
-//        Tact tact = new Tact(130,8);
-//        Beat beat = tact.createBeat(BeatsTypes.EIGHTH);
-//        Click click = tact.createClick();
-//        click.createSound(InstrumentsTypes.SideStick);
+        MetronomeUI mainFrame = new MetronomeUI();
+        mainFrame.initializeMetronome();
+        mainFrame.fillTempoField();
+        mainFrame.fillQuantityButton();
+        mainFrame.fillBeatButton();
+        mainFrame.fillInstrumentTypes();
+        mainFrame.fillVolumeSlider();
+        mainFrame.pack();
+        mainFrame.setVisible(true);
     }
 }
